@@ -4,7 +4,7 @@ from constants import *
 
 
 class Car:
-    def __init__(self) -> None:
+    def __init__(self, draw_radars=False) -> None:
         # Load Car Sprite and Rotate
         sprite = pygame.image.load("../assets/rari.png").convert()
         self.sprite = pygame.transform.scale(sprite, (CAR_SIZE_X, CAR_SIZE_Y))
@@ -21,9 +21,9 @@ class Car:
             self.position[1] + CAR_SIZE_Y / 2,
         ]  # Calculate Center
 
-        self.radar_view = False
+        self.draw_radars = draw_radars
         self.radars = []  # List For Sensors / Radars
-        self.drawing_radars = []  # Radars To Be Drawn
+        self.drawn_radars = []  # Radars To Be Drawn
 
         self.alive = True  # Boolean To Check If Car is Crashed
 
@@ -32,8 +32,8 @@ class Car:
 
     def draw(self, screen):
         screen.blit(self.rotated_sprite, self.position)  # Draw Sprite
-        if self.radar_view:
-            self.draw_radar(screen)  # OPTIONAL FOR SENSORS
+        if self.draw_radars:
+            self.draw_radar(screen)  # optionally draw sensors
 
     def draw_radar(self, screen):
         # Optionally Draw All Sensors / Radars
@@ -45,7 +45,7 @@ class Car:
     def check_collision(self, game_map):
         for point in self.corners:
             # If Any Corner Touches Border Color -> Crash
-            # models car as rectangle
+            # models car hitbox as a rectangle
             if game_map.get_at((int(point[0]), int(point[1]))) == BORDER_COLOR:
                 self.alive = False
                 break

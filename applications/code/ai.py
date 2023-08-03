@@ -23,7 +23,7 @@ def run_simulation(genomes, config):
         nets.append(net)
         g.fitness = 0
 
-        cars.append(Car())
+        cars.append(Car(draw_radars=True))
 
     # Clock Settings
     # Font Settings & Loading Map
@@ -43,7 +43,7 @@ def run_simulation(genomes, config):
             if event.type == pygame.QUIT:
                 sys.exit(0)
 
-        # For Each Car Get The Acton It Takes
+        # predict the next action for each Car
         for i, car in enumerate(cars):
             output = nets[i].activate(car.get_data())
             choice = output.index(max(output))
